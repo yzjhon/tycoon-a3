@@ -20,7 +20,7 @@ const Player = ({ position, onMove }: PlayerProps) => {
         newDirection = 'up';
         break;
       case 's':
-        newPosition.y = Math.min(460, position.y + step);
+        newPosition.y = Math.min(440, position.y + step);
         newDirection = 'down';
         break;
       case 'a':
@@ -28,7 +28,7 @@ const Player = ({ position, onMove }: PlayerProps) => {
         newDirection = 'left';
         break;
       case 'd':
-        newPosition.x = Math.min(460, position.x + step);
+        newPosition.x = Math.min(440, position.x + step);
         newDirection = 'right';
         break;
       default:
@@ -46,7 +46,7 @@ const Player = ({ position, onMove }: PlayerProps) => {
 
   return (
     <div
-      className="absolute w-10 h-10 transition-all duration-150 z-10"
+      className="absolute w-16 h-16 transition-all duration-150 z-10"
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -59,7 +59,7 @@ const Player = ({ position, onMove }: PlayerProps) => {
         className="w-full h-full object-contain animate-bounce-pixel"
         style={{
           imageRendering: 'pixelated',
-          filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.3))'
+          filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.4))'
         }}
       />
     </div>
