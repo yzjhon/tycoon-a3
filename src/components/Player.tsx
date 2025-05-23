@@ -50,18 +50,18 @@ const Player = ({ position, onMove }: PlayerProps) => {
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
+        transform: direction === 'left' ? 'scaleX(-1)' : 'scaleX(1)',
       }}
     >
-      <div className="w-full h-full bg-pixel-orange border-2 border-pixel-dark rounded-sm animate-bounce-pixel">
-        <div className="w-full h-full flex items-center justify-center">
-          <span className="text-xs font-retro text-white">
-            {direction === 'up' && '↑'}
-            {direction === 'down' && '↓'}
-            {direction === 'left' && '←'}
-            {direction === 'right' && '→'}
-          </span>
-        </div>
-      </div>
+      <img 
+        src="/lovable-uploads/737ca361-b5a3-491f-9f60-aee0ca875cca.png"
+        alt="Personagem"
+        className="w-full h-full object-contain animate-bounce-pixel"
+        style={{
+          imageRendering: 'pixelated',
+          filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.3))'
+        }}
+      />
     </div>
   );
 };
