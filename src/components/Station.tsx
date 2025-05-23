@@ -61,7 +61,7 @@ const Station = ({ type, position, playerPosition, onInteract }: StationProps) =
       {isNear && (
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
           <span className="bg-pixel-dark text-white px-2 py-1 rounded text-xs font-pixel">
-            Pressione para investir
+            Clique para investir
           </span>
         </div>
       )}
