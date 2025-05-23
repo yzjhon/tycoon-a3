@@ -1,3 +1,5 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,6 +98,31 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-pixel;
+  }
+
+  .pixel-button {
+    @apply bg-pixel-blue text-white px-4 py-2 border-2 border-pixel-dark 
+           hover:bg-pixel-yellow hover:text-pixel-dark transition-all duration-150
+           font-retro text-xs uppercase tracking-wider;
+    image-rendering: pixelated;
+    box-shadow: 2px 2px 0px #2C3E50;
+  }
+
+  .pixel-button:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #2C3E50;
+  }
+
+  .pixel-card {
+    @apply bg-pixel-light border-4 border-pixel-dark rounded-none p-4;
+    image-rendering: pixelated;
+    box-shadow: 4px 4px 0px #2C3E50;
+  }
+
+  .pixel-input {
+    @apply bg-white border-2 border-pixel-dark px-3 py-2 font-pixel text-sm
+           focus:border-pixel-blue focus:outline-none;
+    image-rendering: pixelated;
   }
 }

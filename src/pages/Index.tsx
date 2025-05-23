@@ -1,11 +1,26 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Verificar se já tem um jogador cadastrado
+    const playerName = localStorage.getItem('playerName');
+    if (playerName) {
+      navigate('/home');
+    } else {
+      navigate('/register');
+    }
+  }, [navigate]);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pixel-blue to-pixel-purple">
+      <div className="pixel-card text-center">
+        <h1 className="font-retro text-2xl text-pixel-dark animate-pixel-glow">
+          Carregando EcoEmpreendedor...
+        </h1>
       </div>
     </div>
   );

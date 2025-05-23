@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,22 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				pixel: {
+					blue: '#4A90E2',
+					green: '#7ED321',
+					red: '#D0021B',
+					yellow: '#F5A623',
+					purple: '#9013FE',
+					orange: '#FF6B35',
+					pink: '#FF69B4',
+					dark: '#2C3E50',
+					light: '#ECF0F1'
 				}
+			},
+			fontFamily: {
+				'pixel': ['Orbitron', 'monospace'],
+				'retro': ['Press Start 2P', 'monospace']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +100,23 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pixel-glow': {
+					'0%, 100%': { boxShadow: '0 0 5px #4A90E2' },
+					'50%': { boxShadow: '0 0 20px #4A90E2, 0 0 30px #4A90E2' }
+				},
+				'bounce-pixel': {
+					'0%, 20%, 53%, 80%, 100%': { transform: 'translateY(0px)' },
+					'40%, 43%': { transform: 'translateY(-8px)' },
+					'70%': { transform: 'translateY(-4px)' },
+					'90%': { transform: 'translateY(-2px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pixel-glow': 'pixel-glow 2s ease-in-out infinite',
+				'bounce-pixel': 'bounce-pixel 1s ease-in-out infinite'
 			}
 		}
 	},
