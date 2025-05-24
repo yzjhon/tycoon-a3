@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Player from '@/components/Player';
@@ -161,11 +160,44 @@ const Game = () => {
     }
   };
 
-  // Format time as MM:SS
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
+  const getInteractableStation = useCallback(() => {
+    for (const station of stations) {
+      const isNear = Math.abs(playerPosition.x - station.position.x) < 50 && 
+                     Math.abs(playerPosition.y - station.position.y) < 50;
+      if (isNear) {
+        return station.type;
+      }
+    }
+    return null;
+  }, [playerPosition, stations]);
+
+  const [interactableStationType, setInteractableStationType] = useState<string | null>(null);
+
+  useEffect(() => {
+    setInteractableStationType(getInteractableStation());
+  }, [playerPosition, getInteractableStation]);
+
+  const handleInvestButtonClick = () => {
+    const stationType = getInteractableStation();
+    if (stationType) {
+      setSelectedStation(stationType);
+      setIsInvestmentModalOpen(true);
+    } else {
+      toast.info("Aproxime-se de uma estação para abrir o menu de investimento.");
+    }
+  };
+  
+  const stationNames: { [key: string]: string } = {
+    production: 'Produção',
+    innovation: 'Inovação',
+    marketing: 'Marketing',
+    hr: 'RH',
   };
 
   return (
@@ -253,7 +285,7 @@ const Game = () => {
               <h3 className="font-retro text-sm text-pixel-dark mb-4">Controles</h3>
               <div className="font-pixel text-xs text-pixel-dark space-y-2">
                 <p><strong>WASD:</strong> Mover personagem</p>
-                <p><strong>Aproxime-se</strong> das estações e <strong>clique nelas</strong> para investir</p>
+                <p><strong>Aproxime-se</strong> das estações e <strong>clique nelas</strong> ou no botão abaixo para investir</p>
                 <p>Você tem 2 minutos para fazer seus investimentos</p>
                 <p>Invista em pelo menos uma estação antes de finalizar</p>
               </div>
@@ -264,7 +296,7 @@ const Game = () => {
               <div className="space-y-2">
                 {Object.entries(currentInvestments).map(([station, amount]) => (
                   <div key={station} className="flex justify-between font-pixel text-xs text-pixel-dark">
-                    <span className="capitalize">{station}:</span>
+                    <span className="capitalize">{stationNames[station] || station}:</span>
                     <span>R$ {amount.toLocaleString()}</span>
                   </div>
                 ))}
@@ -273,6 +305,16 @@ const Game = () => {
                 )}
               </div>
             </div>
+
+            <Button
+              onClick={handleInvestButtonClick}
+              className="pixel-button w-full text-sm py-3"
+              disabled={!interactableStationType}
+            >
+              {interactableStationType 
+                ? `Investir em ${stationNames[interactableStationType] || interactableStationType}` 
+                : "Aproxime-se para investir"}
+            </Button>
 
             <Button
               onClick={finishRound}
