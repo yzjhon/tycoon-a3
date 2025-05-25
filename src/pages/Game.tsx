@@ -241,13 +241,13 @@ const Game = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Mapa do jogo */}
           <div className="flex-1">
-            <div className="pixel-card bg-pixel-light/50 p-0 overflow-hidden">
+            <div className="pixel-card p-0 overflow-hidden">
               <div 
-                className="relative" // Removed gradient: from-pixel-green/30 to-pixel-blue/30
+                className="relative"
                 style={{ 
                   width: '500px', 
                   height: '500px', 
-                  backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`, // Added office background image
+                  backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center'
                 }}
@@ -264,19 +264,19 @@ const Game = () => {
                   />
                 ))}
                 
-                {/* Grid visual - keeping it for now, might need adjustment */}
-                <div className="absolute inset-0 opacity-20"> {/* Adjusted opacity slightly for better visibility with image */}
+                {/* Grid visual - adjusted opacity to 10% */}
+                <div className="absolute inset-0 opacity-10">
                   {Array.from({ length: 26 }).map((_, i) => (
                     <div
                       key={`v-${i}`}
-                      className="absolute w-px bg-pixel-dark" // Kept grid lines dark
+                      className="absolute w-px bg-pixel-dark"
                       style={{ left: `${i * 20}px`, height: '100%' }}
                     />
                   ))}
                   {Array.from({ length: 26 }).map((_, i) => (
                     <div
                       key={`h-${i}`}
-                      className="absolute h-px bg-pixel-dark" // Kept grid lines dark
+                      className="absolute h-px bg-pixel-dark"
                       style={{ top: `${i * 20}px`, width: '100%' }}
                     />
                   ))}
