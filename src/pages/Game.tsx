@@ -243,8 +243,14 @@ const Game = () => {
           <div className="flex-1">
             <div className="pixel-card bg-pixel-light/50 p-0 overflow-hidden">
               <div 
-                className="relative bg-gradient-to-br from-pixel-green/30 to-pixel-blue/30"
-                style={{ width: '500px', height: '500px' }}
+                className="relative" // Removed gradient: from-pixel-green/30 to-pixel-blue/30
+                style={{ 
+                  width: '500px', 
+                  height: '500px', 
+                  backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`, // Added office background image
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
               >
                 <Player position={playerPosition} onMove={setPlayerPosition} />
                 
@@ -258,19 +264,19 @@ const Game = () => {
                   />
                 ))}
                 
-                {/* Grid visual */}
-                <div className="absolute inset-0 opacity-20">
+                {/* Grid visual - keeping it for now, might need adjustment */}
+                <div className="absolute inset-0 opacity-20"> {/* Adjusted opacity slightly for better visibility with image */}
                   {Array.from({ length: 26 }).map((_, i) => (
                     <div
                       key={`v-${i}`}
-                      className="absolute w-px bg-pixel-dark"
+                      className="absolute w-px bg-pixel-dark" // Kept grid lines dark
                       style={{ left: `${i * 20}px`, height: '100%' }}
                     />
                   ))}
                   {Array.from({ length: 26 }).map((_, i) => (
                     <div
                       key={`h-${i}`}
-                      className="absolute h-px bg-pixel-dark"
+                      className="absolute h-px bg-pixel-dark" // Kept grid lines dark
                       style={{ top: `${i * 20}px`, width: '100%' }}
                     />
                   ))}
