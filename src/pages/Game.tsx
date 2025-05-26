@@ -30,11 +30,12 @@ const Game = () => {
   const [timeRemaining, setTimeRemaining] = useState(120); // 2 minutes in seconds
   const [isTimerActive, setIsTimerActive] = useState(true);
 
+  // Adjusted station positions to fit the office layout image
   const stations = [
-    { type: 'production', position: { x: 100, y: 350 } }, // Adjusted position
-    { type: 'innovation', position: { x: 230, y: 380 } }, // Adjusted position
-    { type: 'marketing', position: { x: 360, y: 350 } }, // Adjusted position
-    { type: 'hr', position: { x: 180, y: 280 } },         // Adjusted position
+    { type: 'hr', position: { x: 100, y: 100 } },         // Top-left desk area
+    { type: 'innovation', position: { x: 380, y: 100 } }, // Top-right desk area
+    { type: 'marketing', position: { x: 100, y: 380 } },  // Bottom-left desk area (with plant)
+    { type: 'production', position: { x: 380, y: 380 } }, // Bottom-right larger desk area
   ];
 
   useEffect(() => {
@@ -246,7 +247,7 @@ const Game = () => {
               style={{ 
                 width: '500px', 
                 height: '500px', 
-                backgroundImage: `url('/lovable-uploads/0f4d148b-b2da-4c2c-9c04-52a70e8a5c8f.png')`, // Updated background image
+                backgroundImage: `url('/lovable-uploads/0f4d148b-b2da-4c2c-9c04-52a70e8a5c8f.png')`, 
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
@@ -298,9 +299,9 @@ const Game = () => {
             <div className="pixel-card">
               <h3 className="font-retro text-sm text-pixel-dark mb-4">Investimentos Atuais</h3>
               <div className="space-y-2">
-                {Object.entries(currentInvestments).map(([station, amount]) => (
-                  <div key={station} className="flex justify-between font-pixel text-xs text-pixel-dark">
-                    <span className="capitalize">{stationNames[station] || station}:</span>
+                {Object.entries(currentInvestments).map(([stationType, amount]) => (
+                  <div key={stationType} className="flex justify-between font-pixel text-xs text-pixel-dark">
+                    <span className="capitalize">{stationNames[stationType] || stationType}:</span>
                     <span>R$ {amount.toLocaleString()}</span>
                   </div>
                 ))}
