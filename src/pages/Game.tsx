@@ -105,7 +105,7 @@ const Game = () => {
     localStorage.setItem('round', (round + 1).toString());
     
     setIsResultsModalOpen(true);
-  }, [calculateResults, round]);
+  }, [calculateResults, round, capital, sustainability]); // Added capital and sustainability dependencies
 
   // Countdown timer effect
   useEffect(() => {
@@ -246,7 +246,7 @@ const Game = () => {
               style={{ 
                 width: '500px', 
                 height: '500px', 
-                backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`,
+                backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`, // Updated image
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
