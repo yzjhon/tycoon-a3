@@ -50,46 +50,6 @@ const Game = () => {
     setRound(parseInt(localStorage.getItem('round') || '1'));
   }, [navigate]);
 
-  // Countdown timer effect
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    
-    if (isTimerActive && timeRemaining > 0) {
-      interval = setInterval(() => {
-        setTimeRemaining(prevTime => prevTime - 1);
-      }, 1000);
-    } else if (timeRemaining === 0) {
-      // Auto-finish the round when time runs out
-      setIsTimerActive(false);
-      if (Object.keys(currentInvestments).length > 0) {
-        finishRound();
-      } else {
-        toast.warning("Tempo esgotado! Você precisa fazer pelo menos um investimento.");
-        setTimeRemaining(30); // Give an extra 30 seconds
-        setIsTimerActive(true);
-      }
-    }
-    
-    return () => clearInterval(interval);
-  }, [isTimerActive, timeRemaining, currentInvestments, finishRound]);
-
-  const handleStationInteract = (stationType: string) => {
-    setSelectedStation(stationType);
-    setIsInvestmentModalOpen(true);
-  };
-
-  const handleInvestment = (amount: number) => {
-    const newCapital = capital - amount;
-    setCapital(newCapital);
-    
-    setCurrentInvestments(prev => ({
-      ...prev,
-      [selectedStation]: (prev[selectedStation] || 0) + amount
-    }));
-
-    localStorage.setItem('capital', newCapital.toString());
-  };
-
   const calculateResults = useCallback(() => {
     const investments = currentInvestments;
     const totalInvestment = Object.values(investments).reduce((sum, amount) => sum + amount, 0);
@@ -147,7 +107,47 @@ const Game = () => {
     setIsResultsModalOpen(true);
   }, [calculateResults, round]);
 
-  const handleResultsClose = () => {
+  // Countdown timer effect
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    
+    if (isTimerActive && timeRemaining > 0) {
+      interval = setInterval(() => {
+        setTimeRemaining(prevTime => prevTime - 1);
+      }, 1000);
+    } else if (timeRemaining === 0) {
+      // Auto-finish the round when time runs out
+      setIsTimerActive(false);
+      if (Object.keys(currentInvestments).length > 0) {
+        finishRound();
+      } else {
+        toast.warning("Tempo esgotado! Você precisa fazer pelo menos um investimento.");
+        setTimeRemaining(30); // Give an extra 30 seconds
+        setIsTimerActive(true);
+      }
+    }
+    
+    return () => clearInterval(interval);
+  }, [isTimerActive, timeRemaining, currentInvestments, finishRound]);
+
+  const handleStationInteract = useCallback((stationType: string) => {
+    setSelectedStation(stationType);
+    setIsInvestmentModalOpen(true);
+  }, []);
+
+  const handleInvestment = useCallback((amount: number) => {
+    const newCapital = capital - amount;
+    setCapital(newCapital);
+    
+    setCurrentInvestments(prev => ({
+      ...prev,
+      [selectedStation]: (prev[selectedStation] || 0) + amount
+    }));
+
+    localStorage.setItem('capital', newCapital.toString());
+  }, [capital, selectedStation]);
+
+  const handleResultsClose = useCallback(() => {
     setIsResultsModalOpen(false);
     setCurrentInvestments({});
     
@@ -158,7 +158,7 @@ const Game = () => {
       setTimeRemaining(120); // Reset timer for new round
       setIsTimerActive(true); // Start timer again
     }
-  };
+  }, [navigate, round]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -183,7 +183,7 @@ const Game = () => {
     setInteractableStationType(getInteractableStation());
   }, [playerPosition, getInteractableStation]);
 
-  const handleInvestButtonClick = () => {
+  const handleInvestButtonClick = useCallback(() => {
     const stationType = getInteractableStation();
     if (stationType) {
       setSelectedStation(stationType);
@@ -191,7 +191,7 @@ const Game = () => {
     } else {
       toast.info("Aproxime-se de uma estação para abrir o menu de investimento.");
     }
-  };
+  }, [getInteractableStation]);
   
   const stationNames: { [key: string]: string } = {
     production: 'Produção',
@@ -242,14 +242,13 @@ const Game = () => {
           {/* Mapa do jogo */}
           <div className="flex-1">
             <div 
-              className="relative border-4 border-pixel-dark rounded-sm"
+              className="relative border-4 border-pixel-dark rounded-sm overflow-hidden"
               style={{ 
                 width: '500px', 
                 height: '500px', 
                 backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                overflow: 'hidden'
               }}
             >
               <Player position={playerPosition} onMove={setPlayerPosition} />
@@ -264,7 +263,8 @@ const Game = () => {
                 />
               ))}
               
-              <div className="absolute inset-0 opacity-10">
+              {/* Grid Overlay - Reduced opacity */}
+              <div className="absolute inset-0 opacity-5 pointer-events-none">
                 {Array.from({ length: 26 }).map((_, i) => (
                   <div
                     key={`v-${i}`}
