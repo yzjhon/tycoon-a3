@@ -71,7 +71,7 @@ const Game = () => {
     }
     
     return () => clearInterval(interval);
-  }, [isTimerActive, timeRemaining, currentInvestments]);
+  }, [isTimerActive, timeRemaining, currentInvestments, finishRound]);
 
   const handleStationInteract = (stationType: string) => {
     setSelectedStation(stationType);
@@ -90,7 +90,7 @@ const Game = () => {
     localStorage.setItem('capital', newCapital.toString());
   };
 
-  const calculateResults = () => {
+  const calculateResults = useCallback(() => {
     const investments = currentInvestments;
     const totalInvestment = Object.values(investments).reduce((sum, amount) => sum + amount, 0);
     
@@ -121,18 +121,18 @@ const Game = () => {
     // Adiciona aleatoriedade
     sustainabilityChange += Math.round((Math.random() - 0.5) * 10);
     
-    const newCapital = capital + profit;
-    const newSustainability = Math.max(0, Math.min(100, sustainability + sustainabilityChange));
+    const newCapitalCalculated = capital + profit;
+    const newSustainabilityCalculated = Math.max(0, Math.min(100, sustainability + sustainabilityChange));
     
     return {
       profit,
       sustainabilityChange,
-      newCapital,
-      newSustainability
+      newCapital: newCapitalCalculated,
+      newSustainability: newSustainabilityCalculated
     };
-  };
+  }, [currentInvestments, capital, sustainability]);
 
-  const finishRound = () => {
+  const finishRound = useCallback(() => {
     setIsTimerActive(false); // Pause the timer
     const results = calculateResults();
     setRoundResults(results);
@@ -145,7 +145,7 @@ const Game = () => {
     localStorage.setItem('round', (round + 1).toString());
     
     setIsResultsModalOpen(true);
-  };
+  }, [calculateResults, round]);
 
   const handleResultsClose = () => {
     setIsResultsModalOpen(false);
@@ -154,7 +154,7 @@ const Game = () => {
     if (round >= 3) {
       navigate('/game-over');
     } else {
-      setRound(round + 1);
+      setRound(r => r + 1);
       setTimeRemaining(120); // Reset timer for new round
       setIsTimerActive(true); // Start timer again
     }
@@ -241,46 +241,44 @@ const Game = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Mapa do jogo */}
           <div className="flex-1">
-            <div className="pixel-card p-0 overflow-hidden">
-              <div 
-                className="relative"
-                style={{ 
-                  width: '500px', 
-                  height: '500px', 
-                  backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                <Player position={playerPosition} onMove={setPlayerPosition} />
-                
-                {stations.map((station, index) => (
-                  <Station
-                    key={index}
-                    type={station.type as any}
-                    position={station.position}
-                    playerPosition={playerPosition}
-                    onInteract={handleStationInteract}
+            <div 
+              className="relative border-4 border-pixel-dark rounded-sm"
+              style={{ 
+                width: '500px', 
+                height: '500px', 
+                backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                overflow: 'hidden'
+              }}
+            >
+              <Player position={playerPosition} onMove={setPlayerPosition} />
+              
+              {stations.map((station, index) => (
+                <Station
+                  key={index}
+                  type={station.type as any}
+                  position={station.position}
+                  playerPosition={playerPosition}
+                  onInteract={handleStationInteract}
+                />
+              ))}
+              
+              <div className="absolute inset-0 opacity-10">
+                {Array.from({ length: 26 }).map((_, i) => (
+                  <div
+                    key={`v-${i}`}
+                    className="absolute w-px bg-pixel-dark"
+                    style={{ left: `${i * 20}px`, height: '100%' }}
                   />
                 ))}
-                
-                {/* Grid visual - adjusted opacity to 10% */}
-                <div className="absolute inset-0 opacity-10">
-                  {Array.from({ length: 26 }).map((_, i) => (
-                    <div
-                      key={`v-${i}`}
-                      className="absolute w-px bg-pixel-dark"
-                      style={{ left: `${i * 20}px`, height: '100%' }}
-                    />
-                  ))}
-                  {Array.from({ length: 26 }).map((_, i) => (
-                    <div
-                      key={`h-${i}`}
-                      className="absolute h-px bg-pixel-dark"
-                      style={{ top: `${i * 20}px`, width: '100%' }}
-                    />
-                  ))}
-                </div>
+                {Array.from({ length: 26 }).map((_, i) => (
+                  <div
+                    key={`h-${i}`}
+                    className="absolute h-px bg-pixel-dark"
+                    style={{ top: `${i * 20}px`, width: '100%' }}
+                  />
+                ))}
               </div>
             </div>
           </div>
