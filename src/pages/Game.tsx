@@ -31,10 +31,10 @@ const Game = () => {
   const [isTimerActive, setIsTimerActive] = useState(true);
 
   const stations = [
-    { type: 'production', position: { x: 100, y: 100 } },
-    { type: 'innovation', position: { x: 300, y: 100 } },
-    { type: 'marketing', position: { x: 100, y: 300 } },
-    { type: 'hr', position: { x: 300, y: 300 } },
+    { type: 'production', position: { x: 100, y: 350 } }, // Adjusted position
+    { type: 'innovation', position: { x: 230, y: 380 } }, // Adjusted position
+    { type: 'marketing', position: { x: 360, y: 350 } }, // Adjusted position
+    { type: 'hr', position: { x: 180, y: 280 } },         // Adjusted position
   ];
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const Game = () => {
     localStorage.setItem('round', (round + 1).toString());
     
     setIsResultsModalOpen(true);
-  }, [calculateResults, round, capital, sustainability]); // Added capital and sustainability dependencies
+  }, [calculateResults, round, capital, sustainability]);
 
   // Countdown timer effect
   useEffect(() => {
@@ -246,7 +246,7 @@ const Game = () => {
               style={{ 
                 width: '500px', 
                 height: '500px', 
-                backgroundImage: `url('/lovable-files/placeholder_images/photo-1498050108023-c5249f4df085.jpg')`, // Updated image
+                backgroundImage: `url('/lovable-uploads/0f4d148b-b2da-4c2c-9c04-52a70e8a5c8f.png')`, // Updated background image
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
