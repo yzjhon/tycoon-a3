@@ -243,13 +243,10 @@ const Game = () => {
           {/* Mapa do jogo */}
           <div className="flex-1">
             <div 
-              className="relative border-4 border-pixel-dark rounded-sm overflow-hidden"
+              className="relative border-4 border-pixel-dark rounded-sm overflow-hidden bg-pixel-light"
               style={{ 
                 width: '500px', 
                 height: '500px', 
-                backgroundImage: `url('/lovable-uploads/0f4d148b-b2da-4c2c-9c04-52a70e8a5c8f.png')`, 
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
               }}
             >
               <Player position={playerPosition} onMove={setPlayerPosition} />
