@@ -67,8 +67,16 @@ const GameOver = () => {
     navigate('/register');
   };
 
+  const participants = [
+    { name: "João Vitor Alves da Silva", id: "823211048" },
+    { name: "Giulio Silva Barros", id: "82414822" },
+    { name: "Ryan Henrique de Sousa Silva", id: "82515836" },
+    { name: "Lucas Hahne Vigar Torsani Oioli", id: "823242292" },
+    { name: "Flavio Tanaka de Araújo", id: "823226957" }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pixel-purple to-pixel-dark flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pixel-purple to-pixel-dark flex flex-col items-center justify-center p-4">
       <div className="pixel-card max-w-2xl w-full text-center">
         <h1 className="font-retro text-3xl text-pixel-dark mb-4 animate-pixel-glow">
           Fim de Jogo
@@ -112,7 +120,7 @@ const GameOver = () => {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <Button
             onClick={playAgain}
             className="pixel-button px-8 py-4"
@@ -126,6 +134,22 @@ const GameOver = () => {
           >
             Novo Jogador
           </Button>
+        </div>
+      </div>
+
+      {/* Participantes do Projeto */}
+      <div className="pixel-card max-w-2xl w-full text-center mt-4">
+        <h3 className="font-retro text-lg text-pixel-dark mb-4">
+          Participantes do Projeto
+        </h3>
+        <div className="space-y-2">
+          {participants.map((participant, index) => (
+            <div key={index} className="pixel-card bg-pixel-light/30">
+              <p className="font-pixel text-sm text-pixel-dark">
+                {participant.name} - {participant.id}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
