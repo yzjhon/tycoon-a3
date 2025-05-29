@@ -96,7 +96,9 @@ const GameOver = () => {
             </div>
             
             <div className="pixel-card bg-pixel-green/20">
-              <h3 className="font-retro text-sm text-pixel-dark mb-2">Lucro Total</h3>
+              <h3 className="font-retro text-sm text-pixel-dark mb-2">
+                {gameData.totalProfit >= 0 ? 'Lucro Total' : 'Prejuízo Total'}
+              </h3>
               <p className={`font-pixel text-lg ${gameData.totalProfit >= 0 ? 'text-pixel-green' : 'text-pixel-red'}`}>
                 {gameData.totalProfit >= 0 ? '+' : ''}R$ {gameData.totalProfit.toLocaleString()}
               </p>

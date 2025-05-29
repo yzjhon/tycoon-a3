@@ -29,9 +29,11 @@ const ResultsModal = ({ isOpen, results, round, onClose }: ResultsModalProps) =>
         <div className="space-y-4">
           <div className="pixel-card bg-pixel-yellow/20">
             <div className="space-y-2 font-pixel text-sm">
-              <div className={`flex justify-between ${profit >= 0 ? 'text-pixel-green' : 'text-pixel-red'}`}>
-                <span>Lucro/Prejuízo:</span>
-                <span className="font-bold">
+              <div className="flex justify-between">
+                <span className="text-pixel-dark">
+                  {profit >= 0 ? 'Lucro:' : 'Prejuízo:'}
+                </span>
+                <span className={`font-bold ${profit >= 0 ? 'text-pixel-green' : 'text-pixel-red'}`}>
                   {profit >= 0 ? '+' : ''}R$ {profit.toLocaleString()}
                 </span>
               </div>
