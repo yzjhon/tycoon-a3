@@ -56,7 +56,7 @@ const Player = ({ position, onMove }: PlayerProps) => {
       <img 
         src="/lovable-uploads/21c676ee-b328-4559-99ef-65e034cb3c2a.png"
         alt="Personagem"
-        className="w-full h-full object-contain animate-bounce-pixel"
+        className="w-full h-full object-contain"
         style={{
           imageRendering: 'pixelated',
           filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.4))'

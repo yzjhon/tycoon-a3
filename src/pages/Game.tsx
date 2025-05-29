@@ -320,7 +320,7 @@ const Game = () => {
 
             <Button
               onClick={finishRound}
-              className="pixel-button w-full text-lg py-4 animate-bounce-pixel"
+              className="pixel-button w-full text-lg py-4"
               disabled={Object.keys(currentInvestments).length === 0}
             >
               Finalizar Rodada {round}
