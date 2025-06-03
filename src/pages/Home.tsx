@@ -60,7 +60,7 @@ const Home = () => {
 
         <Button
           onClick={startGame}
-          className="pixel-button text-lg px-8 py-4 animate-bounce-pixel"
+          className="pixel-button text-lg px-8 py-4"
         >
           Iniciar Jogo
         </Button>

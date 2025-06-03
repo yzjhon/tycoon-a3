@@ -28,7 +28,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-pixel-blue to-pixel-purple flex items-center justify-center p-4">
-      <div className="pixel-card max-w-md w-full text-center animate-bounce-pixel">
+      <div className="pixel-card max-w-md w-full text-center">
         <h1 className="font-retro text-2xl text-pixel-dark mb-8 animate-pixel-glow">
           EcoEmpreendedor
         </h1>
