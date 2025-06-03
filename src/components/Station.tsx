@@ -6,9 +6,10 @@ interface StationProps {
   position: { x: number; y: number };
   playerPosition: { x: number; y: number };
   onInteract: (type: string) => void;
+  isDisabled?: boolean; // Nova prop para indicar se a estação está desabilitada
 }
 
-const Station = ({ type, position, playerPosition, onInteract }: StationProps) => {
+const Station = ({ type, position, playerPosition, onInteract, isDisabled = false }: StationProps) => {
   const icons = {
     production: Factory,
     innovation: Lamp,
@@ -43,25 +44,39 @@ const Station = ({ type, position, playerPosition, onInteract }: StationProps) =
       }}
     >
       <div 
-        className={`w-16 h-16 ${colors[type]} border-4 border-pixel-dark rounded-sm 
-                   flex items-center justify-center cursor-pointer
-                   ${isNear ? 'animate-pixel-glow scale-110' : ''}
+        className={`w-16 h-16 ${isDisabled ? 'bg-gray-400' : colors[type]} border-4 border-pixel-dark rounded-sm 
+                   flex items-center justify-center ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'}
+                   ${isNear && !isDisabled ? 'animate-pixel-glow scale-110' : ''}
+                   ${isDisabled ? 'opacity-50' : ''}
                    transition-all duration-300`}
-        onClick={() => isNear && onInteract(type)}
+        onClick={() => isNear && !isDisabled && onInteract(type)}
       >
-        <IconComponent className="w-8 h-8 text-white" />
+        <IconComponent className={`w-8 h-8 ${isDisabled ? 'text-gray-600' : 'text-white'}`} />
       </div>
       
       <div className="text-center mt-2">
-        <span className="font-pixel text-xs text-pixel-dark">
+        <span className={`font-pixel text-xs ${isDisabled ? 'text-gray-500' : 'text-pixel-dark'}`}>
           {names[type]}
         </span>
+        {isDisabled && (
+          <div className="text-xs font-pixel text-gray-500">
+            ✓ Investido
+          </div>
+        )}
       </div>
       
-      {isNear && (
+      {isNear && !isDisabled && (
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
           <span className="bg-pixel-dark text-white px-2 py-1 rounded text-xs font-pixel">
             Clique para investir
+          </span>
+        </div>
+      )}
+      
+      {isNear && isDisabled && (
+        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
+          <span className="bg-gray-600 text-white px-2 py-1 rounded text-xs font-pixel">
+            Já investido
           </span>
         </div>
       )}

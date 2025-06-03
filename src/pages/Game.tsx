@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ const Game = () => {
   const [playerName, setPlayerName] = useState('');
   
   const [currentInvestments, setCurrentInvestments] = useState<{[key: string]: number}>({});
+  const [investedStations, setInvestedStations] = useState<string[]>([]); // Novas estações que já receberam investimento
   const [isInvestmentModalOpen, setIsInvestmentModalOpen] = useState(false);
   const [selectedStation, setSelectedStation] = useState('');
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
@@ -132,9 +134,15 @@ const Game = () => {
   }, [isTimerActive, timeRemaining, currentInvestments, finishRound]);
 
   const handleStationInteract = useCallback((stationType: string) => {
+    // Verificar se a estação já recebeu investimento nesta rodada
+    if (investedStations.includes(stationType)) {
+      toast.warning(`Você já investiu em ${stationNames[stationType]} nesta rodada!`);
+      return;
+    }
+    
     setSelectedStation(stationType);
     setIsInvestmentModalOpen(true);
-  }, []);
+  }, [investedStations]);
 
   const handleInvestment = useCallback((amount: number) => {
     const newCapital = capital - amount;
@@ -145,12 +153,17 @@ const Game = () => {
       [selectedStation]: (prev[selectedStation] || 0) + amount
     }));
 
+    // Adicionar a estação à lista de estações que já receberam investimento
+    setInvestedStations(prev => [...prev, selectedStation]);
+
     localStorage.setItem('capital', newCapital.toString());
+    toast.success(`Investimento de R$ ${amount.toLocaleString()} realizado em ${stationNames[selectedStation]}!`);
   }, [capital, selectedStation]);
 
   const handleResultsClose = useCallback(() => {
     setIsResultsModalOpen(false);
     setCurrentInvestments({});
+    setInvestedStations([]); // Resetar estações investidas para a nova rodada
     
     if (round >= 3) {
       navigate('/game-over');
@@ -171,12 +184,12 @@ const Game = () => {
     for (const station of stations) {
       const isNear = Math.abs(playerPosition.x - station.position.x) < 50 && 
                      Math.abs(playerPosition.y - station.position.y) < 50;
-      if (isNear) {
+      if (isNear && !investedStations.includes(station.type)) { // Verificar se não foi investido ainda
         return station.type;
       }
     }
     return null;
-  }, [playerPosition, stations]);
+  }, [playerPosition, stations, investedStations]);
 
   const [interactableStationType, setInteractableStationType] = useState<string | null>(null);
 
@@ -190,9 +203,19 @@ const Game = () => {
       setSelectedStation(stationType);
       setIsInvestmentModalOpen(true);
     } else {
-      toast.info("Aproxime-se de uma estação para abrir o menu de investimento.");
+      // Verificar se está perto de uma estação mas já investiu nela
+      const nearStation = stations.find(station => 
+        Math.abs(playerPosition.x - station.position.x) < 50 && 
+        Math.abs(playerPosition.y - station.position.y) < 50
+      );
+      
+      if (nearStation && investedStations.includes(nearStation.type)) {
+        toast.warning(`Você já investiu em ${stationNames[nearStation.type]} nesta rodada!`);
+      } else {
+        toast.info("Aproxime-se de uma estação disponível para abrir o menu de investimento.");
+      }
     }
-  }, [getInteractableStation]);
+  }, [getInteractableStation, playerPosition, stations, investedStations]);
   
   const stationNames: { [key: string]: string } = {
     production: 'Produção',
@@ -258,6 +281,7 @@ const Game = () => {
                   position={station.position}
                   playerPosition={playerPosition}
                   onInteract={handleStationInteract}
+                  isDisabled={investedStations.includes(station.type)} // Nova prop para indicar se está desabilitada
                 />
               ))}
               
@@ -288,6 +312,7 @@ const Game = () => {
               <div className="font-pixel text-xs text-pixel-dark space-y-2">
                 <p><strong>WASD:</strong> Mover personagem</p>
                 <p><strong>Aproxime-se</strong> das estações e <strong>clique nelas</strong> ou no botão abaixo para investir</p>
+                <p><strong>Limite:</strong> Apenas 1 investimento por área por rodada</p>
                 <p>Você tem 2 minutos para fazer seus investimentos</p>
                 <p>Invista em pelo menos uma estação antes de finalizar</p>
               </div>
