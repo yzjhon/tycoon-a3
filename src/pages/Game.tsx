@@ -20,6 +20,7 @@ const Game = () => {
   const [currentQuestions, setCurrentQuestions] = useState([]);
   const [usedQuestionIds, setUsedQuestionIds] = useState({});
   const [investedStations, setInvestedStations] = useState([]);
+  const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
   const [gameResults, setGameResults] = useState({
     profit: 0,
     sustainabilityChange: 0,
@@ -46,6 +47,10 @@ const Game = () => {
     if (savedRound) setRound(parseInt(savedRound));
   }, []);
 
+  const handlePlayerMove = useCallback((newPosition: { x: number; y: number }) => {
+    setPlayerPosition(newPosition);
+  }, []);
+
   const handleStationClick = useCallback((stationType: string) => {
     if (investedStations.includes(stationType)) {
       toast({
@@ -58,7 +63,7 @@ const Game = () => {
     
     setSelectedStation(stationType);
     setIsInvestmentModalOpen(true);
-  }, [investedStations, toast]);
+  }, [investedStations, toast, stationNames]);
 
   const handleInvestment = useCallback((amount: number) => {
     const newCapital = capital - amount;
@@ -153,34 +158,34 @@ const Game = () => {
           </div>
         </div>
 
-        <Player />
+        <Player position={playerPosition} onMove={handlePlayerMove} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Station 
             type="production" 
             position={{ x: 0, y: 0 }}
-            playerPosition={{ x: 0, y: 0 }}
+            playerPosition={playerPosition}
             onInteract={() => handleStationClick('production')}
             isDisabled={investedStations.includes('production')}
           />
           <Station 
             type="innovation" 
             position={{ x: 0, y: 0 }}
-            playerPosition={{ x: 0, y: 0 }}
+            playerPosition={playerPosition}
             onInteract={() => handleStationClick('innovation')}
             isDisabled={investedStations.includes('innovation')}
           />
           <Station 
             type="marketing" 
             position={{ x: 0, y: 0 }}
-            playerPosition={{ x: 0, y: 0 }}
+            playerPosition={playerPosition}
             onInteract={() => handleStationClick('marketing')}
             isDisabled={investedStations.includes('marketing')}
           />
           <Station 
             type="hr" 
             position={{ x: 0, y: 0 }}
-            playerPosition={{ x: 0, y: 0 }}
+            playerPosition={playerPosition}
             onInteract={() => handleStationClick('hr')}
             isDisabled={investedStations.includes('hr')}
           />
