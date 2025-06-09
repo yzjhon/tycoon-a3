@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -47,7 +48,11 @@ const Game = () => {
 
   const handleStationClick = useCallback((stationType: string) => {
     if (investedStations.includes(stationType)) {
-      toast.error(`Você já investiu em ${stationNames[stationType]} nesta rodada!`);
+      toast({
+        title: "Erro",
+        description: `Você já investiu em ${stationNames[stationType]} nesta rodada!`,
+        variant: "destructive"
+      });
       return;
     }
     
@@ -63,13 +68,17 @@ const Game = () => {
     setInvestedStations(prev => [...prev, selectedStation]);
 
     localStorage.setItem('capital', newCapital.toString());
-    toast.success(`Investimento de R$ ${amount.toLocaleString()} realizado em ${stationNames[selectedStation]}!`);
+    toast({
+      title: "Sucesso",
+      description: `Investimento de R$ ${amount.toLocaleString()} realizado em ${stationNames[selectedStation]}!`
+    });
     
     // Após o investimento, abrir o modal de decisões
     const questions = getRandomQuestions(selectedStation, usedQuestionIds[selectedStation] || []);
     setCurrentQuestions(questions);
+    setIsInvestmentModalOpen(false);
     setIsDecisionModalOpen(true);
-  }, [capital, selectedStation, usedQuestionIds]);
+  }, [capital, selectedStation, usedQuestionIds, toast, stationNames]);
 
   const handleDecision = useCallback((impact: { money: number; sustainability: number }) => {
     // Aplicar impacto das decisões imediatamente
@@ -90,10 +99,13 @@ const Game = () => {
       [selectedStation]: [...(prev[selectedStation] || []), ...questionIds]
     }));
 
-    toast.success(`Decisões aplicadas! Capital: R$ ${newCapital.toLocaleString()}, Sustentabilidade: ${newSustainability}%`);
+    toast({
+      title: "Sucesso",
+      description: `Decisões aplicadas! Capital: R$ ${newCapital.toLocaleString()}, Sustentabilidade: ${newSustainability}%`
+    });
     
     setIsDecisionModalOpen(false);
-  }, [capital, sustainability, currentQuestions, selectedStation]);
+  }, [capital, sustainability, currentQuestions, selectedStation, toast]);
 
   const handleFinishRound = useCallback(() => {
     // Não calcular mais resultados - apenas mostrar os valores atuais
@@ -121,8 +133,11 @@ const Game = () => {
     }
     
     setIsResultsModalOpen(false);
-    toast.success(`Rodada ${newRound} iniciada!`);
-  }, [round]);
+    toast({
+      title: "Nova Rodada",
+      description: `Rodada ${newRound} iniciada!`
+    });
+  }, [round, toast]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pixel-blue/20 to-pixel-yellow/20 p-4">
@@ -138,40 +153,36 @@ const Game = () => {
           </div>
         </div>
 
-        <Player capital={capital} sustainability={sustainability} />
+        <Player />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Station 
             type="production" 
-            title="Produção" 
-            description="Otimize processos produtivos"
-            icon="🏭"
-            onClick={() => handleStationClick('production')}
-            isInvested={investedStations.includes('production')}
+            position={{ x: 0, y: 0 }}
+            playerPosition={{ x: 0, y: 0 }}
+            onInteract={() => handleStationClick('production')}
+            isDisabled={investedStations.includes('production')}
           />
           <Station 
             type="innovation" 
-            title="Inovação" 
-            description="Desenvolva novas tecnologias"
-            icon="💡"
-            onClick={() => handleStationClick('innovation')}
-            isInvested={investedStations.includes('innovation')}
+            position={{ x: 0, y: 0 }}
+            playerPosition={{ x: 0, y: 0 }}
+            onInteract={() => handleStationClick('innovation')}
+            isDisabled={investedStations.includes('innovation')}
           />
           <Station 
             type="marketing" 
-            title="Marketing" 
-            description="Promova seus produtos"
-            icon="📣"
-            onClick={() => handleStationClick('marketing')}
-            isInvested={investedStations.includes('marketing')}
+            position={{ x: 0, y: 0 }}
+            playerPosition={{ x: 0, y: 0 }}
+            onInteract={() => handleStationClick('marketing')}
+            isDisabled={investedStations.includes('marketing')}
           />
           <Station 
             type="hr" 
-            title="Recursos Humanos" 
-            description="Gerencie sua equipe"
-            icon="🧑‍🤝‍🧑"
-            onClick={() => handleStationClick('hr')}
-            isInvested={investedStations.includes('hr')}
+            position={{ x: 0, y: 0 }}
+            playerPosition={{ x: 0, y: 0 }}
+            onInteract={() => handleStationClick('hr')}
+            isDisabled={investedStations.includes('hr')}
           />
         </div>
 
