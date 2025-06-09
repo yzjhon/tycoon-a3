@@ -1,11 +1,12 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Player from '@/components/Player';
 import Station from '@/components/Station';
 import InvestmentModal from '@/components/InvestmentModal';
+import DecisionModal from '@/components/DecisionModal';
 import ResultsModal from '@/components/ResultsModal';
+import { getRandomQuestions } from '@/data/questions';
 import { toast } from 'sonner';
 
 const Game = () => {
@@ -17,9 +18,14 @@ const Game = () => {
   const [playerName, setPlayerName] = useState('');
   
   const [currentInvestments, setCurrentInvestments] = useState<{[key: string]: number}>({});
-  const [investedStations, setInvestedStations] = useState<string[]>([]); // Novas estações que já receberam investimento
+  const [investedStations, setInvestedStations] = useState<string[]>([]);
+  const [usedQuestionIds, setUsedQuestionIds] = useState<{[key: string]: number[]}>({});
+  
   const [isInvestmentModalOpen, setIsInvestmentModalOpen] = useState(false);
+  const [isDecisionModalOpen, setIsDecisionModalOpen] = useState(false);
   const [selectedStation, setSelectedStation] = useState('');
+  const [currentQuestions, setCurrentQuestions] = useState<any[]>([]);
+  
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
   const [roundResults, setRoundResults] = useState({
     profit: 0,
@@ -159,6 +165,28 @@ const Game = () => {
     localStorage.setItem('capital', newCapital.toString());
     toast.success(`Investimento de R$ ${amount.toLocaleString()} realizado em ${stationNames[selectedStation]}!`);
   }, [capital, selectedStation]);
+
+  const handleDecision = useCallback((impact: { money: number; sustainability: number }) => {
+    // Aplicar impacto das decisões
+    const newCapital = capital + impact.money;
+    const newSustainability = Math.max(0, Math.min(100, sustainability + impact.sustainability));
+    
+    setCapital(newCapital);
+    setSustainability(newSustainability);
+    
+    // Marcar perguntas como usadas
+    const questionIds = currentQuestions.map(q => q.id);
+    setUsedQuestionIds(prev => ({
+      ...prev,
+      [selectedStation]: [...(prev[selectedStation] || []), ...questionIds]
+    }));
+    
+    localStorage.setItem('capital', newCapital.toString());
+    localStorage.setItem('sustainability', newSustainability.toString());
+    
+    const impactMessage = `Impacto: ${impact.money >= 0 ? '+' : ''}R$ ${impact.money.toLocaleString()} / Sustentabilidade ${impact.sustainability >= 0 ? '+' : ''}${impact.sustainability}%`;
+    toast.success(impactMessage);
+  }, [capital, sustainability, currentQuestions, selectedStation]);
 
   const handleResultsClose = useCallback(() => {
     setIsResultsModalOpen(false);
@@ -315,6 +343,7 @@ const Game = () => {
                 <p><strong>Limite:</strong> Apenas 1 investimento por área por rodada</p>
                 <p>Você tem 2 minutos para fazer seus investimentos</p>
                 <p>Invista em pelo menos uma estação antes de finalizar</p>
+                <p><strong>Novo:</strong> Após cada investimento, você tomará decisões que afetam os resultados!</p>
               </div>
             </div>
 
@@ -360,6 +389,14 @@ const Game = () => {
         onClose={() => setIsInvestmentModalOpen(false)}
         onInvest={handleInvestment}
         currentCapital={capital}
+      />
+
+      <DecisionModal
+        isOpen={isDecisionModalOpen}
+        stationType={selectedStation}
+        questions={currentQuestions}
+        onClose={() => setIsDecisionModalOpen(false)}
+        onDecision={handleDecision}
       />
 
       <ResultsModal
