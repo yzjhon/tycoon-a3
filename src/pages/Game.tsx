@@ -164,7 +164,12 @@ const Game = () => {
 
     localStorage.setItem('capital', newCapital.toString());
     toast.success(`Investimento de R$ ${amount.toLocaleString()} realizado em ${stationNames[selectedStation]}!`);
-  }, [capital, selectedStation]);
+    
+    // Após o investimento, abrir o modal de decisões
+    const questions = getRandomQuestions(selectedStation, usedQuestionIds[selectedStation] || []);
+    setCurrentQuestions(questions);
+    setIsDecisionModalOpen(true);
+  }, [capital, selectedStation, usedQuestionIds]);
 
   const handleDecision = useCallback((impact: { money: number; sustainability: number }) => {
     // Aplicar impacto das decisões
