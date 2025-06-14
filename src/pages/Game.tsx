@@ -303,7 +303,7 @@ const Game = () => {
               style={{ 
                 width: '500px', 
                 height: '500px',
-                backgroundImage: 'url(/lovable-uploads/1a363126-1dbc-4342-a4ce-3a97d0be5d66.png)',
+                backgroundImage: 'url(/lovable-uploads/77a0c157-3b29-47ae-aee2-a7af380e8128.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
