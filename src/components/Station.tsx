@@ -25,9 +25,9 @@ const Station = ({ type, position, playerPosition, onInteract, isDisabled = fals
   };
 
   const names = {
-    production: 'Produção',
-    innovation: 'Inovação',
-    marketing: 'Marketing',
+    production: 'PRODUÇÃO',
+    innovation: 'INOVAÇÃO',
+    marketing: 'MARKETING',
     hr: 'RH',
   };
 
@@ -55,11 +55,13 @@ const Station = ({ type, position, playerPosition, onInteract, isDisabled = fals
       </div>
       
       <div className="text-center mt-2">
-        <span className={`font-pixel text-xs ${isDisabled ? 'text-gray-500' : 'text-pixel-dark'}`}>
-          {names[type]}
-        </span>
+        <div className="bg-black px-2 py-1 rounded-sm">
+          <span className={`font-pixel text-xs text-white`}>
+            {names[type]}
+          </span>
+        </div>
         {isDisabled && (
-          <div className="text-xs font-pixel text-gray-500">
+          <div className="text-xs font-pixel text-gray-500 mt-1">
             ✓ Investido
           </div>
         )}
