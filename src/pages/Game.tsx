@@ -114,7 +114,7 @@ const Game = () => {
     localStorage.setItem('round', (round + 1).toString());
     
     setIsResultsModalOpen(true);
-  }, [calculateResults, round, capital, sustainability]);
+  }, [calculateResults, round]);
 
   // Countdown timer effect
   useEffect(() => {
@@ -299,10 +299,14 @@ const Game = () => {
           {/* Mapa do jogo */}
           <div className="flex-1">
             <div 
-              className="relative border-4 border-pixel-dark rounded-sm overflow-hidden bg-pixel-light"
+              className="relative border-4 border-pixel-dark rounded-sm overflow-hidden"
               style={{ 
                 width: '500px', 
-                height: '500px', 
+                height: '500px',
+                backgroundImage: 'url(/lovable-uploads/1a363126-1dbc-4342-a4ce-3a97d0be5d66.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
               }}
             >
               <Player position={playerPosition} onMove={setPlayerPosition} />
@@ -317,24 +321,6 @@ const Game = () => {
                   isDisabled={investedStations.includes(station.type)} // Nova prop para indicar se está desabilitada
                 />
               ))}
-              
-              {/* Grid Overlay - Reduced opacity */}
-              <div className="absolute inset-0 opacity-5 pointer-events-none">
-                {Array.from({ length: 26 }).map((_, i) => (
-                  <div
-                    key={`v-${i}`}
-                    className="absolute w-px bg-pixel-dark"
-                    style={{ left: `${i * 20}px`, height: '100%' }}
-                  />
-                ))}
-                {Array.from({ length: 26 }).map((_, i) => (
-                  <div
-                    key={`h-${i}`}
-                    className="absolute h-px bg-pixel-dark"
-                    style={{ top: `${i * 20}px`, width: '100%' }}
-                  />
-                ))}
-              </div>
             </div>
           </div>
 
