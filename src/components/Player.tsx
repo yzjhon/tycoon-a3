@@ -46,7 +46,7 @@ const Player = ({ position, onMove }: PlayerProps) => {
 
   return (
     <div
-      className="absolute w-16 h-16 transition-all duration-150 z-10"
+      className="absolute w-20 h-20 transition-all duration-150 z-10"
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
