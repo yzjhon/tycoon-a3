@@ -1,4 +1,5 @@
 
+
 import { Factory, Lamp, Megaphone, Group } from 'lucide-react';
 
 interface StationProps {
@@ -51,7 +52,7 @@ const Station = ({ type, position, playerPosition, onInteract, isDisabled = fals
                    transition-all duration-300`}
         onClick={() => isNear && !isDisabled && onInteract(type)}
       >
-        <IconComponent className={`w-8 h-8 ${isDisabled ? 'text-gray-600' : 'text-white'}`} />
+        <IconComponent className={`w-6 h-6 ${isDisabled ? 'text-gray-600' : 'text-white'}`} />
       </div>
       
       <div className="text-center mt-2">
@@ -87,3 +88,4 @@ const Station = ({ type, position, playerPosition, onInteract, isDisabled = fals
 };
 
 export default Station;
+
