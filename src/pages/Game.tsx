@@ -38,12 +38,12 @@ const Game = () => {
   const [timeRemaining, setTimeRemaining] = useState(120); // 2 minutes in seconds
   const [isTimerActive, setIsTimerActive] = useState(true);
 
-  // Reposicionando as estações para ficarem abaixo da mesa
+  // Posicionando as estações conforme a imagem: 2 em cima, 2 embaixo
   const stations = [
-    { type: 'hr', position: { x: 80, y: 380 } },           // Abaixo da mesa, lado esquerdo
-    { type: 'innovation', position: { x: 180, y: 380 } },  // Abaixo da mesa, centro-esquerda
-    { type: 'marketing', position: { x: 280, y: 380 } },   // Abaixo da mesa, centro-direita
-    { type: 'production', position: { x: 380, y: 380 } },  // Abaixo da mesa, lado direito
+    { type: 'hr', position: { x: 120, y: 180 } },           // Superior esquerdo
+    { type: 'innovation', position: { x: 360, y: 180 } },   // Superior direito
+    { type: 'marketing', position: { x: 120, y: 380 } },    // Inferior esquerdo
+    { type: 'production', position: { x: 360, y: 380 } },   // Inferior direito
   ];
 
   useEffect(() => {
