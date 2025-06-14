@@ -38,11 +38,11 @@ const Game = () => {
   const [timeRemaining, setTimeRemaining] = useState(120); // 2 minutes in seconds
   const [isTimerActive, setIsTimerActive] = useState(true);
 
-  // Posicionando as estações conforme a imagem: 2 em cima, 2 embaixo
+  // Posicionando as estações: RH e Marketing mais à esquerda
   const stations = [
-    { type: 'hr', position: { x: 120, y: 180 } },           // Superior esquerdo
+    { type: 'hr', position: { x: 80, y: 180 } },            // Superior esquerdo (mais à esquerda)
     { type: 'innovation', position: { x: 360, y: 180 } },   // Superior direito
-    { type: 'marketing', position: { x: 120, y: 380 } },    // Inferior esquerdo
+    { type: 'marketing', position: { x: 80, y: 380 } },     // Inferior esquerdo (mais à esquerda)
     { type: 'production', position: { x: 360, y: 380 } },   // Inferior direito
   ];
 
