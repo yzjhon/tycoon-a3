@@ -38,12 +38,12 @@ const Game = () => {
   const [timeRemaining, setTimeRemaining] = useState(120); // 2 minutes in seconds
   const [isTimerActive, setIsTimerActive] = useState(true);
 
-  // Posicionando as estações: ainda mais à esquerda
+  // Posicionando as estações: produção e inovação mais à esquerda
   const stations = [
     { type: 'hr', position: { x: 20, y: 180 } },            // Superior esquerdo (mais à esquerda)
-    { type: 'innovation', position: { x: 280, y: 180 } },   // Superior direito (mais para esquerda)
+    { type: 'innovation', position: { x: 200, y: 180 } },   // Superior direito (muito mais para esquerda)
     { type: 'marketing', position: { x: 20, y: 380 } },     // Inferior esquerdo (mais à esquerda)
-    { type: 'production', position: { x: 280, y: 380 } },   // Inferior direito (mais para esquerda)
+    { type: 'production', position: { x: 200, y: 380 } },   // Inferior direito (muito mais para esquerda)
   ];
 
   useEffect(() => {
