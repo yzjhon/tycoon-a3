@@ -38,12 +38,12 @@ const Game = () => {
   const [timeRemaining, setTimeRemaining] = useState(120); // 2 minutes in seconds
   const [isTimerActive, setIsTimerActive] = useState(true);
 
-  // Adjusted station positions to fit the office layout image
+  // Reposicionando as estações para alinhar com as pessoas nas cadeiras
   const stations = [
-    { type: 'hr', position: { x: 100, y: 100 } },         // Top-left desk area
-    { type: 'innovation', position: { x: 380, y: 100 } }, // Top-right desk area
-    { type: 'marketing', position: { x: 100, y: 380 } },  // Bottom-left desk area (with plant)
-    { type: 'production', position: { x: 380, y: 380 } }, // Bottom-right larger desk area
+    { type: 'hr', position: { x: 80, y: 120 } },           // Pessoa na cadeira superior esquerda
+    { type: 'innovation', position: { x: 400, y: 120 } },  // Pessoa na cadeira superior direita
+    { type: 'marketing', position: { x: 80, y: 320 } },    // Pessoa na cadeira inferior esquerda
+    { type: 'production', position: { x: 400, y: 320 } },  // Pessoa na cadeira inferior direita
   ];
 
   useEffect(() => {
