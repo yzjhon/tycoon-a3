@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -38,12 +39,12 @@ const Game = () => {
   const [timeRemaining, setTimeRemaining] = useState(120); // 2 minutes in seconds
   const [isTimerActive, setIsTimerActive] = useState(true);
 
-  // Posicionando as estações: produção e inovação mais à esquerda
+  // Posicionando as estações: produção e inovação na total direita
   const stations = [
-    { type: 'hr', position: { x: 20, y: 180 } },            // Superior esquerdo (mais à esquerda)
-    { type: 'innovation', position: { x: 200, y: 180 } },   // Superior direito (muito mais para esquerda)
-    { type: 'marketing', position: { x: 20, y: 380 } },     // Inferior esquerdo (mais à esquerda)
-    { type: 'production', position: { x: 200, y: 380 } },   // Inferior direito (muito mais para esquerda)
+    { type: 'hr', position: { x: 20, y: 180 } },            // Superior esquerdo
+    { type: 'innovation', position: { x: 420, y: 180 } },   // Superior direito (total direita)
+    { type: 'marketing', position: { x: 20, y: 380 } },     // Inferior esquerdo
+    { type: 'production', position: { x: 420, y: 380 } },   // Inferior direito (total direita)
   ];
 
   useEffect(() => {
