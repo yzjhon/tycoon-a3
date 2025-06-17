@@ -141,8 +141,20 @@ const Game = () => {
   }, [capital, selectedStation, usedQuestionIds]);
 
   const handleDecision = useCallback((impact: { money: number; sustainability: number }) => {
+    // Nova lógica: se positivo, ganha investimento + bônus; se negativo, perde investimento + penalidade
+    const investmentAmount = currentInvestments[selectedStation] || 0;
+    let finalMoneyImpact;
+    
+    if (impact.money >= 0) {
+      // Impacto positivo: ganha o valor investido + o bônus da pergunta
+      finalMoneyImpact = investmentAmount + impact.money;
+    } else {
+      // Impacto negativo: perde o valor investido + a penalidade da pergunta
+      finalMoneyImpact = -investmentAmount + impact.money; // impact.money já é negativo
+    }
+    
     // Aplicar impacto das decisões
-    const newCapital = capital + impact.money;
+    const newCapital = capital + finalMoneyImpact;
     const newSustainability = Math.max(0, Math.min(100, sustainability + impact.sustainability));
     
     setCapital(newCapital);
@@ -158,9 +170,9 @@ const Game = () => {
     localStorage.setItem('capital', newCapital.toString());
     localStorage.setItem('sustainability', newSustainability.toString());
     
-    const impactMessage = `Impacto: ${impact.money >= 0 ? '+' : ''}R$ ${impact.money.toLocaleString()} / Sustentabilidade ${impact.sustainability >= 0 ? '+' : ''}${impact.sustainability}%`;
+    const impactMessage = `Impacto: ${finalMoneyImpact >= 0 ? '+' : ''}R$ ${finalMoneyImpact.toLocaleString()} / Sustentabilidade ${impact.sustainability >= 0 ? '+' : ''}${impact.sustainability}%`;
     toast.success(impactMessage);
-  }, [capital, sustainability, currentQuestions, selectedStation]);
+  }, [capital, sustainability, currentQuestions, selectedStation, currentInvestments]);
 
   const handleResultsClose = useCallback(() => {
     setIsResultsModalOpen(false);
