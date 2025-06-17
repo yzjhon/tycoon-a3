@@ -34,8 +34,8 @@ const Game = () => {
     newSustainability: 0,
   });
 
-  // Timer state
-  const [timeRemaining, setTimeRemaining] = useState(120); // 2 minutes in seconds
+  // Timer
+  const [timeRemaining, setTimeRemaining] = useState(120);
   const [isTimerActive, setIsTimerActive] = useState(true);
 
   // Posicionando as estações: produção e inovação na direita mas visíveis
@@ -71,7 +71,7 @@ const Game = () => {
   }, [capital, sustainability]);
 
   const finishRound = useCallback(() => {
-    setIsTimerActive(false); // Pause the timer
+    setIsTimerActive(false);
     const results = calculateResults();
     setRoundResults(results);
     setCapital(results.newCapital);
@@ -85,7 +85,7 @@ const Game = () => {
     setIsResultsModalOpen(true);
   }, [calculateResults, round]);
 
-  // Countdown timer effect
+  // timer
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
     
@@ -94,13 +94,13 @@ const Game = () => {
         setTimeRemaining(prevTime => prevTime - 1);
       }, 1000);
     } else if (timeRemaining === 0) {
-      // Auto-finish the round when time runs out
+      // termina o turno quando acaba o tempo
       setIsTimerActive(false);
       if (Object.keys(currentInvestments).length > 0) {
         finishRound();
       } else {
         toast.warning("Tempo esgotado! Você precisa fazer pelo menos um investimento.");
-        setTimeRemaining(30); // Give an extra 30 seconds
+        setTimeRemaining(30); // não fazer nada poderia ser uma opção mas preferem deixar assim
         setIsTimerActive(true);
       }
     }
@@ -134,18 +134,16 @@ const Game = () => {
     localStorage.setItem('capital', newCapital.toString());
     toast.success(`Investimento de R$ ${amount.toLocaleString()} realizado em ${stationNames[selectedStation]}!`);
     
-    // Após o investimento, abrir o modal de decisões
+    // Após o investimento, abrir decisões
     const questions = getRandomQuestions(selectedStation, usedQuestionIds[selectedStation] || []);
     setCurrentQuestions(questions);
     setIsDecisionModalOpen(true);
   }, [capital, selectedStation, usedQuestionIds]);
 
   const handleDecision = useCallback((impact: { money: number; sustainability: number }) => {
-    // Nova lógica: investimento como base + ganho/perda da pergunta
+
     const investmentAmount = currentInvestments[selectedStation] || 0;
-    
-    // O jogador sempre recebe o valor investido de volta
-    // Mais o ganho ou menos a perda da pergunta
+    // player recebe o valor incial +- impacto da pergunta
     const finalReturn = investmentAmount + impact.money;
     
     // Aplicar impacto das decisões
@@ -178,8 +176,8 @@ const Game = () => {
       navigate('/game-over');
     } else {
       setRound(r => r + 1);
-      setTimeRemaining(120); // Reset timer for new round
-      setIsTimerActive(true); // Start timer again
+      setTimeRemaining(120);
+      setIsTimerActive(true);
     }
   }, [navigate, round]);
 
@@ -279,7 +277,7 @@ const Game = () => {
               style={{ 
                 width: '500px', 
                 height: '500px',
-                backgroundImage: 'url(/lovable-uploads/77a0c157-3b29-47ae-aee2-a7af380e8128.png)',
+                backgroundImage: 'url(/graphics/background.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'

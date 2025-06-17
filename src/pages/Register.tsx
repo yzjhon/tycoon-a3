@@ -3,21 +3,19 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label'; // Importar o Label
+import { Label } from '@/components/ui/label';
 
 const Register = () => {
   const [playerName, setPlayerName] = useState('');
-  const [email, setEmail] = useState(''); // Novo estado para e-mail
-  const [password, setPassword] = useState(''); // Novo estado para senha
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleStart = () => {
     if (playerName.trim() && email.trim() && password.trim()) { // Verificar todos os campos
       localStorage.setItem('playerName', playerName);
-      localStorage.setItem('playerEmail', email); // Salvar e-mail
-      localStorage.setItem('playerPassword', password); // Salvar senha (NÃO SEGURO PARA PRODUÇÃO)
-      // Idealmente, aqui você faria uma chamada para um backend para registrar o usuário de forma segura.
-      // Por agora, estamos apenas simulando o registro localmente.
+      localStorage.setItem('playerEmail', email);
+      localStorage.setItem('playerPassword', password); // NUNCA FAÇA ISSO
       navigate('/home');
     }
   };

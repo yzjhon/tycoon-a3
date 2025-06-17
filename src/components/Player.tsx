@@ -54,7 +54,7 @@ const Player = ({ position, onMove }: PlayerProps) => {
       }}
     >
       <img 
-        src="/lovable-uploads/21c676ee-b328-4559-99ef-65e034cb3c2a.png"
+        src="/graphics/player.png"
         alt="Personagem"
         className="w-full h-full object-contain"
         style={{

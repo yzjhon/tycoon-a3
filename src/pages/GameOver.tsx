@@ -72,7 +72,7 @@ const GameOver = () => {
     { name: "Giulio Silva Barros", id: "82414822" },
     { name: "Ryan Henrique de Sousa Silva", id: "82515836" },
     { name: "Lucas Hahne Vigar Torsani Oioli", id: "823242292" },
-    { name: "Flavio Tanaka de Araújo", id: "823226957" }
+    { name: "Flavio Tanaka de Araujo", id: "823226957" }
   ];
 
   return (
