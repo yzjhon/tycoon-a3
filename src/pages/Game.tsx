@@ -60,46 +60,15 @@ const Game = () => {
   }, [navigate]);
 
   const calculateResults = useCallback(() => {
-    const investments = currentInvestments;
-    const totalInvestment = Object.values(investments).reduce((sum, amount) => sum + amount, 0);
-    
-    if (totalInvestment === 0) {
-      return {
-        profit: -5000, // Penalidade por não investir
-        sustainabilityChange: -10,
-        newCapital: capital - 5000,
-        newSustainability: Math.max(0, sustainability - 10)
-      };
-    }
-
-    // Lógica simplificada baseada em sorte e investimentos
-    const baseMultiplier = 0.5 + Math.random(); // 0.5 a 1.5
-    const sustainabilityBonus = sustainability / 100;
-    const balanceBonus = Object.keys(investments).length / 4; // Bônus por diversificar
-    
-    const totalMultiplier = baseMultiplier + sustainabilityBonus + balanceBonus;
-    const profit = Math.round(totalInvestment * totalMultiplier - totalInvestment);
-    
-    // Mudança na sustentabilidade
-    let sustainabilityChange = 0;
-    if (investments.innovation) sustainabilityChange += 5;
-    if (investments.hr) sustainabilityChange += 3;
-    if (investments.production && !investments.innovation) sustainabilityChange -= 3;
-    if (investments.marketing && !investments.hr) sustainabilityChange -= 2;
-    
-    // Adiciona aleatoriedade
-    sustainabilityChange += Math.round((Math.random() - 0.5) * 10);
-    
-    const newCapitalCalculated = capital + profit;
-    const newSustainabilityCalculated = Math.max(0, Math.min(100, sustainability + sustainabilityChange));
-    
+    // Agora apenas retorna os valores atuais sem modificações
+    // As mudanças vêm apenas das decisões das perguntas
     return {
-      profit,
-      sustainabilityChange,
-      newCapital: newCapitalCalculated,
-      newSustainability: newSustainabilityCalculated
+      profit: 0, // Sem lucro adicional no final da rodada
+      sustainabilityChange: 0, // Sem mudança adicional na sustentabilidade
+      newCapital: capital, // Mantém o capital atual
+      newSustainability: sustainability // Mantém a sustentabilidade atual
     };
-  }, [currentInvestments, capital, sustainability]);
+  }, [capital, sustainability]);
 
   const finishRound = useCallback(() => {
     setIsTimerActive(false); // Pause the timer
