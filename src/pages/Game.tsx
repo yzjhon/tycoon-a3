@@ -141,17 +141,17 @@ const Game = () => {
   }, [capital, selectedStation, usedQuestionIds]);
 
   const handleDecision = useCallback((impact: { money: number; sustainability: number }) => {
-    // Nova lógica: se positivo, ganha investimento + bônus; se negativo, perde investimento + penalidade
+    // Nova lógica baseada em percentual sobre o investimento
     const investmentAmount = currentInvestments[selectedStation] || 0;
-    let finalMoneyImpact;
     
-    if (impact.money >= 0) {
-      // Impacto positivo: ganha o valor investido + o bônus da pergunta
-      finalMoneyImpact = investmentAmount + impact.money;
-    } else {
-      // Impacto negativo: perde o valor investido + a penalidade da pergunta
-      finalMoneyImpact = -investmentAmount + impact.money; // impact.money já é negativo
-    }
+    // Converter o valor da pergunta para percentual e aplicar sobre o investimento
+    // Se impact.money for 3000, isso representa +30% (3000/100 = 30%)
+    // Se impact.money for -2000, isso representa -20% (-2000/100 = -20%)
+    const percentualImpact = impact.money / 100; // Converte para percentual
+    const investmentReturn = investmentAmount + (investmentAmount * (percentualImpact / 100));
+    
+    // O retorno final é o valor calculado com base no percentual
+    const finalMoneyImpact = investmentReturn - investmentAmount; // Diferença do investimento original
     
     // Aplicar impacto das decisões
     const newCapital = capital + finalMoneyImpact;
@@ -170,7 +170,8 @@ const Game = () => {
     localStorage.setItem('capital', newCapital.toString());
     localStorage.setItem('sustainability', newSustainability.toString());
     
-    const impactMessage = `Impacto: ${finalMoneyImpact >= 0 ? '+' : ''}R$ ${finalMoneyImpact.toLocaleString()} / Sustentabilidade ${impact.sustainability >= 0 ? '+' : ''}${impact.sustainability}%`;
+    const percentualFormatted = (percentualImpact > 0 ? '+' : '') + percentualImpact.toFixed(1) + '%';
+    const impactMessage = `Retorno: ${percentualFormatted} = R$ ${Math.round(investmentReturn).toLocaleString()} / Sustentabilidade ${impact.sustainability >= 0 ? '+' : ''}${impact.sustainability}%`;
     toast.success(impactMessage);
   }, [capital, sustainability, currentQuestions, selectedStation, currentInvestments]);
 
